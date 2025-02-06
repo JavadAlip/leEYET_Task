@@ -8,7 +8,15 @@ const bookRoutes = require("./routes/bookRoutes");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+const corsOptions = {
+    origin: ["https://leeyet-frontend.onrender.com"], // Allow only your frontend
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
+app.use(cors(corsOptions));
+
 
 // routes//
 app.use("/api/users", userRoutes); 
