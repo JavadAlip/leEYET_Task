@@ -33,6 +33,7 @@ const Register = () => {
 
         try {
             const response = await axios.post('https://leeyet-backend.onrender.com/api/users/register', { name, email, password });
+            console.log('Registration successful:', response.data);
             alert('Registration Successful');
             navigate('/'); 
         } catch (error) {
