@@ -1,30 +1,28 @@
 import { useState, useEffect } from 'react';
-import axiosInstance from './../axios'; // Import your axios instance
-import { useNavigate } from 'react-router-dom'; // Import navigate for redirecting to login
+import axiosInstance from './../axios'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const Dashboard = () => {
     const [books, setBooks] = useState([]);
     const [newBook, setNewBook] = useState({
-        title: '',  
+        title: '',
         author: '',
         isbn: '',
         publishedYear: '',
         availableCopies: ''
     });
-    const [selectedBook, setSelectedBook] = useState(null);  // State for selected book for update
-    const [showModal, setShowModal] = useState(false); // State to control modal visibility
-    const [currentPage, setCurrentPage] = useState(1);  // State for current page
-    const [perPage] = useState(3);  // Number of books per page
-    const [searchQuery, setSearchQuery] = useState('');  // State for search query
-    const navigate = useNavigate(); // For redirecting to the login page
-
-    // Check if user is logged in (using token in localStorage)
-    const isLoggedIn = !!localStorage.getItem('authToken'); // Replace with your actual token logic
-
+    const [selectedBook, setSelectedBook] = useState(null);  
+    const [showModal, setShowModal] = useState(false); 
+    const [currentPage, setCurrentPage] = useState(1);  
+    const [perPage] = useState(3);  
+    const [searchQuery, setSearchQuery] = useState('');  
+    const navigate = useNavigate(); 
+    
+    const isLoggedIn = !!localStorage.getItem('authToken'); 
     // If not logged in, redirect to login page
     useEffect(() => {
         if (!isLoggedIn) {
-            navigate('/'); // Redirect to login page
+            navigate('/');
         }
     }, [isLoggedIn, navigate]);
 
@@ -32,18 +30,18 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axiosInstance.get('/books');  // Using the axiosInstance
-                console.log('API Response:', response);  // Log response to check the structure
-                const booksData = response.data || [];  // Get the books data from the API response
+                const response = await axiosInstance.get('/books');  
+                console.log('API Response:', response);  
+                const booksData = response.data || [];  
                 setBooks(booksData);
             } catch (error) {
                 console.error('Error fetching books:', error);
-                setBooks([]);  // In case of error, set books to an empty array
+                setBooks([]); 
             }
         };
 
         fetchBooks();
-    }, []);  // Empty dependency array to fetch books on component mount
+    }, []);  
 
     // Handle book creation
     const handleCreateBook = async () => {
@@ -54,10 +52,10 @@ const Dashboard = () => {
 
         try {
             const response = await axiosInstance.post('/books', newBook);
-            setBooks([...books, response.data]);  // Add the new book to the list
-            setNewBook({ title: '', author: '', isbn: '', publishedYear: '', availableCopies: '' });  // Clear the form
-            setShowModal(false);  // Close the modal after book is added
-            alert('Book added successfully!');  // Alert for adding a new book
+            setBooks([...books, response.data]); 
+            setNewBook({ title: '', author: '', isbn: '', publishedYear: '', availableCopies: '' });  
+            setShowModal(false);  
+            alert('Book added successfully!');  
         } catch (error) {
             console.error('Error creating book:', error);
             alert('Error adding book!');
@@ -81,10 +79,10 @@ const Dashboard = () => {
             const updatedBooks = books.map((book) =>
                 book._id === selectedBook._id ? { ...book, ...updatedBookData } : book
             );
-            setBooks(updatedBooks);  // Update the books list in the state
-            setShowModal(false);  // Close the modal
-            setSelectedBook(null);  // Reset selected book state
-            alert('Book updated successfully!');  // Alert for updating a book
+            setBooks(updatedBooks);  
+            setShowModal(false);  
+            setSelectedBook(null); 
+            alert('Book updated successfully!');  
         } catch (error) {
             console.error('Error updating book:', error);
         }
@@ -94,8 +92,8 @@ const Dashboard = () => {
     const handleDeleteBook = async (bookId) => {
         try {
             await axiosInstance.delete(`/books/${bookId}`);
-            setBooks(books.filter((book) => book._id !== bookId));  // Remove the deleted book from the list
-            alert('Book deleted successfully!');  // Alert for deleting a book
+            setBooks(books.filter((book) => book._id !== bookId));  
+            alert('Book deleted successfully!'); 
         } catch (error) {
             console.error('Error deleting book:', error);
         }
@@ -103,8 +101,8 @@ const Dashboard = () => {
 
     // Handle logout
     const handleLogout = () => {
-        localStorage.removeItem('authToken');  // Remove token from localStorage
-        navigate('/');  // Redirect to login page
+        localStorage.removeItem('authToken');  
+        navigate('/'); 
     };
 
     // Filter books based on the search query
@@ -251,8 +249,8 @@ const Dashboard = () => {
                                     <td className="p-2">
                                         <button
                                             onClick={() => {
-                                                setSelectedBook(book);  // Set the selected book for update
-                                                setShowModal(true);  // Open the modal
+                                                setSelectedBook(book); 
+                                                setShowModal(true); 
                                             }}
                                             className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600"
                                         >

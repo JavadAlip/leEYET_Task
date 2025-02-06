@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
-import axios from './../axios';  // Import axios instance
+import { useNavigate } from 'react-router-dom'; 
+import axios from './../axios';
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');  // State for error messages
-    const navigate = useNavigate();  // Initialize useNavigate
+    const [error, setError] = useState(''); 
+    const navigate = useNavigate();  
 
     // Validate the form before submission
     const validateForm = () => {
@@ -29,12 +29,12 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return;  // If validation fails, prevent form submission
+        if (!validateForm()) return; 
 
         try {
             const response = await axios.post('/users/register', { name, email, password });
             alert('Registration Successful');
-            navigate('/');  // Redirect to the login page after successful registration
+            navigate('/'); 
         } catch (error) {
             console.error(error);
             setError('Registration Failed');
@@ -45,7 +45,7 @@ const Register = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-2xl font-semibold mb-4 text-center">Create an Account</h2>
-                {error && <div className="text-red-500 mb-4 text-center">{error}</div>}  {/* Show error message */}
+                {error && <div className="text-red-500 mb-4 text-center">{error}</div>} 
                 <form onSubmit={handleRegister} className="space-y-4">
                     <div>
                         <input 

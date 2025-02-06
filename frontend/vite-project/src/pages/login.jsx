@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
-import axios from './../axios';  // Import axios instance
+import { useNavigate } from 'react-router-dom'; 
+import axios from './../axios'; 
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');  // State for error messages
-    const navigate = useNavigate();  // Initialize useNavigate
+    const [error, setError] = useState(''); 
+    const navigate = useNavigate();  
 
     // Validate email and password before submitting
     const validateForm = () => {
@@ -24,14 +24,14 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return;  // If validation fails, prevent form submission
+        if (!validateForm()) return;  
 
         try {
             const response = await axios.post('/users/login', { email, password });
             const token = response.data.token;
-            localStorage.setItem('authToken', token);  // Save token to localStorage
+            localStorage.setItem('authToken', token);  
             alert('Login successful');
-            navigate('/dashboard');  // Redirect to dashboard on success
+            navigate('/dashboard');  
         } catch (error) {
             console.error(error);
             setError('Login failed. Please check your credentials.');
@@ -42,7 +42,7 @@ const Login = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-2xl font-semibold mb-4 text-center">Login to Your Account</h2>
-                {error && <div className="text-red-500 mb-4 text-center">{error}</div>} {/* Show error message */}
+                {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>
                         <input 
