@@ -6,17 +6,38 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');  // State for error messages
     const navigate = useNavigate();  // Initialize useNavigate
+
+    // Validate the form before submission
+    const validateForm = () => {
+        if (!name || !email || !password) {
+            setError('All fields are required');
+            return false;
+        }
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+            setError('Please enter a valid email address');
+            return false;
+        }
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters long');
+            return false;
+        }
+        return true;
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;  // If validation fails, prevent form submission
+
         try {
             const response = await axios.post('/users/register', { name, email, password });
             alert('Registration Successful');
-            navigate('/login');  // Redirect to the login page after successful registration
+            navigate('/');  // Redirect to the login page after successful registration
         } catch (error) {
             console.error(error);
-            alert('Registration Failed');
+            setError('Registration Failed');
         }
     };
 
@@ -24,6 +45,7 @@ const Register = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-2xl font-semibold mb-4 text-center">Create an Account</h2>
+                {error && <div className="text-red-500 mb-4 text-center">{error}</div>}  {/* Show error message */}
                 <form onSubmit={handleRegister} className="space-y-4">
                     <div>
                         <input 
@@ -60,7 +82,7 @@ const Register = () => {
                     </button>
                 </form>
                 <p className="mt-4 text-center text-sm text-gray-500">
-                    Already have an account? <a href="/login" className="text-blue-500 hover:text-blue-600">Login here</a>
+                    Already have an account? <a href="/" className="text-blue-500 hover:text-blue-600">Login here</a>
                 </p>
             </div>
         </div>
