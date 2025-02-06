@@ -27,7 +27,7 @@ const Login = () => {
         if (!validateForm()) return;  
 
         try {
-            const response = await axios.post('/users/login', { email, password });
+            const response = await axios.post('https://leeyet-backend.onrender.com/api/users/login', { email, password });
             const token = response.data.token;
             localStorage.setItem('authToken', token);  
             alert('Login successful');

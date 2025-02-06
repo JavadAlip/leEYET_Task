@@ -32,7 +32,7 @@ const Register = () => {
         if (!validateForm()) return; 
 
         try {
-            const response = await axios.post('/users/register', { name, email, password });
+            const response = await axios.post('https://leeyet-backend.onrender.com/api/users/register', { name, email, password });
             alert('Registration Successful');
             navigate('/'); 
         } catch (error) {
